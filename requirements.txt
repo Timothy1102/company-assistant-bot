@@ -3,3 +3,4 @@ langchain>=0.0.217
 openai
 python-dotenv
 tiktoken
+faiss-gpu
