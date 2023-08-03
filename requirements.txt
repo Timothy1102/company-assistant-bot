@@ -1,4 +1,9 @@
 streamlit==1.25.0
-langchain==0.0.217
+langchain==0.0.250
 openai==0.27.8
 python-dotenv==1.0.0
+sentence-transformers==2.2.2
+faiss-cpu
+tiktoken
+fastapi[all]
+pydantic==1.*
