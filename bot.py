@@ -10,16 +10,17 @@ import os
 load_dotenv()
 
 # 1. Vectorise the sales response csv data
-loader = CSVLoader (file_path="data.csv")
-documents = loader.load()
-embeddings = OpenAIEmbeddings()
-db = FAISS.from_documents (documents, embeddings)
+# loader = CSVLoader (file_path="data.csv")
+# documents = loader.load()
+# embeddings = OpenAIEmbeddings()
+# db = FAISS.from_documents (documents, embeddings)
 
 # 2. Function for similarity search
 def retrieve_info(query):
-    similar_response = db.similarity_search (query, k=3)
-    page_contents_array = [doc.page_content for doc in similar_response]
-    return page_contents_array
+    # similar_response = db.similarity_search (query, k=3)
+    # page_contents_array = [doc.page_content for doc in similar_response]
+    # return page_contents_array
+    return 'company name is KOBIzo.'
 
 # 3. Setup LLMChain & prompts
 template= """
