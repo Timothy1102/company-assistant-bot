@@ -1,7 +1,7 @@
 from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.vectorstores import FAISS
-# from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain.embeddings.openai import OpenAIEmbeddings
+# from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.prompts import PromptTemplate
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
@@ -11,15 +11,15 @@ import os
 load_dotenv()
 
 # 1. Vectorise the sales response csv data
-loader = CSVLoader (file_path="data.csv")
+loader = CSVLoader(file_path="data.csv")
 documents = loader.load()
-# embeddings = OpenAIEmbeddings()
-embeddings = HuggingFaceEmbeddings()
+embeddings = OpenAIEmbeddings()
+# embeddings = HuggingFaceEmbeddings()
 db = FAISS.from_documents(documents, embeddings)
 
 # 2. Function for similarity search
 def retrieve_info(query):
-    similar_response = db.similarity_search (query, k=3)
+    similar_response = db.similarity_search(query, k=3)
     page_contents_array = [doc.page_content for doc in similar_response]
     return page_contents_array
 
