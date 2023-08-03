@@ -3,3 +3,6 @@ langchain==0.0.250
 openai==0.27.8
 python-dotenv==1.0.0
 sentence-transformers==2.2.2
+faiss-gpu
+tiktoken
+numpy
