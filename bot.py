@@ -1,7 +1,6 @@
 from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.vectorstores import FAISS
 from langchain.embeddings.openai import OpenAIEmbeddings
-# from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.prompts import PromptTemplate
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
@@ -10,11 +9,10 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
-# 1. Vectorise the sales response csv data
+# 1. Vectorise company csv data
 loader = CSVLoader(file_path="data.csv")
 documents = loader.load()
 embeddings = OpenAIEmbeddings()
-# embeddings = HuggingFaceEmbeddings()
 db = FAISS.from_documents(documents, embeddings)
 
 # 2. Function for similarity search
@@ -45,7 +43,7 @@ prompt = PromptTemplate(
 llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k-0613")
 chain = LLMChain(llm=llm, prompt=prompt)
 
-# 4. Retrieval augmented generation
+# 4. Get augmented generation
 def generate_response(message):
     company_data = retrieve_info(message)
     response = chain.run(message=message, company_data=company_data)
