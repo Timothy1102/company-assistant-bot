@@ -7,3 +7,7 @@ faiss-cpu
 tiktoken
 fastapi[all]
 pydantic==1.*
+chromadb
+streamlit-extras
+pypdf
+docx2txt

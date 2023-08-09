@@ -1,3 +1,5 @@
+import streamlit as st
+from streamlit_extras.add_vertical_space import add_vertical_space
 from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.vectorstores import FAISS
 from langchain.embeddings.openai import OpenAIEmbeddings
@@ -49,10 +51,29 @@ def generate_response(message):
     response = chain.run(message=message, company_data=company_data)
     return response
 
-# 5. Test
-# message = """
-# why should I choose your service?
-# """
+# Sidebar content
+with st.sidebar:
+    st.title('💬 LLM chatbot 📄')
+    st.markdown('''
+    ## About
+    This app is an LLM-powered chatbot built using:
+    - [Streamlit](https://streamlit.io/)
+    - [LangChain](https://python.langchain.com/)
+    - [OpenAI](https://platform.openai.com/docs/models) LLM model
+    ''')
+    add_vertical_space(5)
+    "[View source code](https://github.com/Timothy1102/company-assistant-bot)"
 
-# response = generate_response(message)
-# print(response)
+st.title("💬 Kobizo Assistant 🤖")
+if "messages" not in st.session_state:
+    st.session_state["messages"] = [{"role": "assistant", "content": "How can I assist you today?"}]
+
+for msg in st.session_state.messages:
+    st.chat_message(msg["role"]).write(msg["content"])
+
+if prompt := st.chat_input():
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    st.chat_message("user").write(prompt)
+    kobizoRes = generate_response(prompt)
+    st.session_state.messages.append({"role": "bot", "content": kobizoRes})
+    st.chat_message("assistant").write(kobizoRes)
