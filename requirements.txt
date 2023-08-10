@@ -5,7 +5,6 @@ python-dotenv==1.0.0
 sentence-transformers==2.2.2
 faiss-cpu
 tiktoken
-fastapi[all]
 pydantic==1.*
 chromadb
 streamlit-extras

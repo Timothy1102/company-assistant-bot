@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from streamlit_extras.add_vertical_space import add_vertical_space
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import Chroma
+from langchain.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 from langchain.llms import OpenAI
 from langchain.document_loaders import CSVLoader
@@ -63,7 +63,7 @@ def generate_response(uploaded_file, query_text):
         # Select embeddings
         embeddings = OpenAIEmbeddings()
         # Create a vector store from documents
-        db = Chroma.from_documents(texts, embeddings)
+        db = FAISS.from_documents(texts, embeddings)
         # Create retriever interface
         retriever = db.as_retriever()
         # Create QA chain
