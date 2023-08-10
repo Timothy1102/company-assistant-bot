@@ -11,3 +11,4 @@ chromadb
 streamlit-extras
 pypdf
 docx2txt
+google-api-python-client
