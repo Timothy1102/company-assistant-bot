@@ -13,7 +13,8 @@ from langchain.document_loaders import Docx2txtLoader
 import os
 from pathlib import Path
 
-# Sidebar contents
+load_dotenv()
+
 with st.sidebar:
     st.title('💬 LLM chatbot 📄')
     st.markdown('''
@@ -26,8 +27,6 @@ with st.sidebar:
     ''')
     add_vertical_space(5)
     "[View source code](https://github.com/Timothy1102/company-assistant-bot)"
- 
-load_dotenv()
 
 def save_file_to_folder(uploadedFile):
     save_folder = 'storage'
@@ -77,11 +76,9 @@ def main():
  
     # upload a file
     uploaded_file = st.file_uploader("Upload your file", type=["pdf", "txt", "csv", "doc", "docx"]) # TODO: support more file types
-    # st.write(uploaded_file)
  
     # Accept user questions/query
     query = st.text_input("Ask questions about your file:")
-    # st.write(query)
 
     # TODO: optimize performance
     if query and uploaded_file:
