@@ -4,5 +4,5 @@
 virtualenv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-streamlit run ui.py
+streamlit run Assistant_Bot.py
 ```

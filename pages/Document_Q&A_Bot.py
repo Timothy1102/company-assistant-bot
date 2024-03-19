@@ -1,17 +1,18 @@
-import streamlit as st
-from dotenv import load_dotenv
-from streamlit_extras.add_vertical_space import add_vertical_space
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import FAISS
-from langchain.chains import RetrievalQA
-from langchain.llms import OpenAI
-from langchain.document_loaders import CSVLoader
-from langchain.document_loaders import TextLoader
-from langchain.document_loaders import PyPDFLoader
-from langchain.document_loaders import Docx2txtLoader
 import os
 from pathlib import Path
+
+import streamlit as st
+from dotenv import load_dotenv
+from langchain.chains import RetrievalQA
+from langchain.document_loaders import CSVLoader
+from langchain.document_loaders import Docx2txtLoader
+from langchain.document_loaders import PyPDFLoader
+from langchain.document_loaders import TextLoader
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.llms import OpenAI
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import FAISS
+from streamlit_extras.add_vertical_space import add_vertical_space
 
 load_dotenv()
 
@@ -28,17 +29,20 @@ with st.sidebar:
     add_vertical_space(5)
     "[View source code](https://github.com/Timothy1102/company-assistant-bot)"
 
+
 def save_file_to_folder(uploadedFile):
     save_folder = 'storage'
     save_path = Path(save_folder, uploadedFile.name)
     with open(save_path, mode='wb') as w:
         w.write(uploadedFile.getvalue())
 
+
 def delete_file_from_folder(file_name):
     save_folder = 'storage'
     file_path = Path(save_folder, file_name)
     if file_path.exists():
         os.remove(file_path)
+
 
 def generate_response(uploaded_file, query_text):
     if uploaded_file is not None:
@@ -67,16 +71,18 @@ def generate_response(uploaded_file, query_text):
         # Create retriever interface
         retriever = db.as_retriever()
         # Create QA chain
-        llm = OpenAI(temperature=0.4)
+        llm = OpenAI(temperature=0.4, model="gpt-3.5-turbo-instruct")
         qa = RetrievalQA.from_chain_type(llm=llm, chain_type='stuff', retriever=retriever)
         return qa.run(query_text)
- 
+
+
 def main():
     st.header("💬 Document Q&A chatbot 📄")
- 
+
     # upload a file
-    uploaded_file = st.file_uploader("Upload your file", type=["pdf", "txt", "csv", "doc", "docx"]) # TODO: support more file types
- 
+    uploaded_file = st.file_uploader("Upload your file",
+                                     type=["pdf", "txt", "csv", "doc", "docx"])  # TODO: support more file types
+
     # Accept user questions/query
     query = st.text_input("Ask questions about your file:")
 
@@ -86,6 +92,7 @@ def main():
         response = generate_response(uploaded_file, query)
         st.write(response)
         delete_file_from_folder(uploaded_file.name)
- 
+
+
 if __name__ == '__main__':
     main()

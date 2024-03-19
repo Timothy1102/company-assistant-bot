@@ -1,14 +1,12 @@
 import streamlit as st
 from dotenv import load_dotenv
-from streamlit_extras.add_vertical_space import add_vertical_space
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import FAISS
 from langchain.chains import RetrievalQA
-from langchain.llms import OpenAI
 from langchain.document_loaders import WebBaseLoader
-import os
-from pathlib import Path
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.llms import OpenAI
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import FAISS
+from streamlit_extras.add_vertical_space import add_vertical_space
 
 # Sidebar contents
 with st.sidebar:
@@ -23,8 +21,9 @@ with st.sidebar:
     ''')
     add_vertical_space(5)
     "[View source code](https://github.com/Timothy1102/company-assistant-bot)"
- 
+
 load_dotenv()
+
 
 def generate_response(url, question):
     if url is not None:
@@ -41,13 +40,14 @@ def generate_response(url, question):
         # Create retriever interface
         retriever = db.as_retriever()
         # Create QA chain
-        llm = OpenAI(temperature=0.4)
+        llm = OpenAI(temperature=0.4, model="gpt-3.5-turbo-instruct")
         qa = RetrievalQA.from_chain_type(llm=llm, chain_type='stuff', retriever=retriever)
         return qa.run(question)
- 
+
+
 def main():
     st.header("💬 URL Q&A chatbot")
- 
+
     # Accept user question
     url = st.text_input("URL:")
     question = st.text_input(
@@ -59,6 +59,7 @@ def main():
     if question and url:
         response = generate_response(url, question)
         st.write(response)
- 
+
+
 if __name__ == '__main__':
     main()
